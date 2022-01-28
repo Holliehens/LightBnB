@@ -1,4 +1,3 @@
-
 const users = require('./json/users.json');
 const { Pool } = require('pg');
 
@@ -23,7 +22,6 @@ const getUserWithEmail = function(email) {
       `select * from users where email = $1`, [email] 
     )
     .then((result) => {
-      console.log(result.rows);
       return result.rows[0];
     })
     .catch((err) => {
@@ -44,7 +42,6 @@ const getUserWithId = function(id) {
       `SELECT * FROM users WHERE id = $1`, [id] 
     )
     .then((result) => {
-      console.log(result.rows);
       return result.rows[0];
     })
     .catch((err) => {
@@ -68,7 +65,6 @@ const addUser =  function(user) {
 
     )
     .then((result) => {
-      console.log(result.rows);
       return result.rows[0];
     })
     .catch((err) => {
@@ -99,7 +95,6 @@ const getAllReservations = function(guest_id, limit = 10) {
     
   )
   .then((result) => {
-    console.log('***RESERVATIONS***', result.rows[0]);
     return result.rows[0];
   })
   .catch((err) => {
@@ -132,9 +127,7 @@ exports.getAllReservations = getAllReservations;
     whereParams.push(`city LIKE $${queryParams.length}`);
   }
 
-
-
-  if (options.owner_id) {
+ if (options.owner_id) {
     queryParams.push(`%${options.owner_id}%`);
     whereParams.push(`owner_id = $${queryParams.length}`)
   }
@@ -165,11 +158,6 @@ exports.getAllReservations = getAllReservations;
   LIMIT $${queryParams.length};
   `;
 
-
-  console.log('***STRING***', queryString, '****PARAMS***', queryParams);
-
-
-
   return pool
     .query(
       queryString,
@@ -189,8 +177,6 @@ exports.getAllProperties = getAllProperties;
  */
 const addProperty = function(property) {
 
-  console.log(property);
-  
   return pool
     .query(
       'INSERT INTO properties (owner_id, title, description, thumbnail_photo_url, cover_photo_url, cost_per_night, parking_spaces,number_of_bathrooms, number_of_bedrooms, country, street, city, province, post_code)VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *', 
@@ -198,7 +184,6 @@ const addProperty = function(property) {
 
     )
     .then((result) => {
-      console.log(result.rows);
       return result.rows[0];
     })
     .catch((err) => {
